@@ -118,11 +118,8 @@ void Level::loadMap(std::string mapName, Graphics &graphics) {
 							// Get the position of the tile in the level
 							int xx = 0;
 							int yy = 0;
-							/*xx = tileWidth * (tileCounter % width);
-							yy = tileHeight * (tileCounter / width);*/
-							xx = tileCounter % width;
-							xx *= tileHeight;
-							yy += tileHeight * (tileCounter / width);
+							xx = tileWidth * (tileCounter % width);
+							yy = tileHeight * (tileCounter / width);
 							Vector2 finalTilePos = Vector2(xx, yy);
 
 							// Calculate the position of the tile in the tileset
@@ -130,11 +127,8 @@ void Level::loadMap(std::string mapName, Graphics &graphics) {
 							SDL_QueryTexture(tls.Texture, NULL, NULL, &tilesetWidth, &tilesetHeight);
 							int tsxx = gid % (tilesetWidth / tileWidth) - 1;
 							tsxx *= tileWidth;
-							//int tsyy = (gid / (tilesetWidth / tileWidth));
-							//tsyy *= tileHeight;
-							int tsyy = 0;
-							int amt = (gid / (tilesetWidth / tileWidth));
-							tsyy = tileHeight * amt;
+							int tsyy = (gid / (tilesetWidth / tileWidth));
+							tsyy *= tileHeight;
 							Vector2 finalTilesetPos = Vector2(tsxx, tsyy);
 
 							// Build the actual tile and add it to the level's tile list

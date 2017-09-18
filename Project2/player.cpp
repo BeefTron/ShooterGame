@@ -5,13 +5,13 @@
 
 namespace player_constants {
 	const float WALK_SPEED = 0.2f;
-	SDL_Point PLAYER_CENTER = { 10 * globals::SPRITE_SCALE, 7 * globals::SPRITE_SCALE };
+	SDL_Point PLAYER_CENTER = { 5 * globals::SPRITE_SCALE, 7 * globals::SPRITE_SCALE };
 }
 
 Player::Player() {}
 
 Player::Player(Graphics &graphics, int x, int y) :
-	AnimatedSprite(graphics, "sprites/Player.png", 0, 0, 51, 15, x, y, 100)
+	AnimatedSprite(graphics, "sprites/Player.png", 0, 0, 16, 16, x, y, 100)
 {
 	graphics.loadImage("sprites/Player.png");
 	this->setupAnimation();
@@ -19,9 +19,9 @@ Player::Player(Graphics &graphics, int x, int y) :
 }
 
 void Player::setupAnimation() {
-	this->addAnimation(1, 0, 0, "idle", 51, 15, Vector2(0, 0));
-	this->addAnimation(5, 0, 0, "move", 51, 15, Vector2(0,0));
-	this->addAnimation(2, 0, 15, "shoot", 51, 16, Vector2(0, 0));
+	this->addAnimation(1, 0, 0, "idle", 16, 16, Vector2(0, 0));
+	this->addAnimation(4, 0, 0, "move", 16, 16, Vector2(0,0));
+	this->addAnimation(2, 0, 15, "shoot", 16, 16, Vector2(0, 0));
 }
 
 void Player::animationDone(std::string currentAnimation) {}

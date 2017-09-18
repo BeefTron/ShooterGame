@@ -5,7 +5,6 @@
 #include "globals.h"
 #include "tile.h"
 
-
 class Graphics;
 struct SDL_Texture;
 struct SDL_Rect;
