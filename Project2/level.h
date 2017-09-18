@@ -1,10 +1,15 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include "globals.h"
+#include "tile.h"
+
 
 class Graphics;
 struct SDL_Texture;
+struct SDL_Rect;
+struct Tileset;
 
 class Level {
 public:
@@ -17,7 +22,23 @@ private:
 	std::string mapName;
 	Vector2 spawnPoint;
 	Vector2 size;
+	Vector2 tileSize;
 	SDL_Texture* backgroundTexture;
+	std::vector<Tile> tileList;
+	std::vector<Tileset> tilesets;
 
 	void loadMap(std::string mapName, Graphics &graphics);
+};
+
+//Tileset struct
+struct Tileset {
+	SDL_Texture* Texture;
+	int FirstGid;
+	Tileset() {
+		this->FirstGid = -1;
+	}
+	Tileset(SDL_Texture* texture, int firstGid) {
+		this->Texture = texture;
+		this->FirstGid = firstGid;
+	}
 };

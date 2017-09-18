@@ -10,6 +10,7 @@ Graphics::Graphics() {
 
 Graphics::~Graphics() {
 	SDL_DestroyWindow(this->window);
+	SDL_DestroyRenderer(this->renderer);
 }
 
 SDL_Surface* Graphics::loadImage(const std::string &filePath) {
