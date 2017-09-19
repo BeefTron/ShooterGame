@@ -20,7 +20,7 @@ SDL_Surface* Graphics::loadImage(const std::string &filePath) {
 	return this->spriteSheets[filePath];
 }
 
-void Graphics::blitSurface(SDL_Texture* source, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle, float angle, SDL_Point* center) {
+void Graphics::blitSurface(SDL_Texture* source, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle, float angle, const SDL_Point* center) {
 	SDL_RenderCopyEx(this->renderer, source, sourceRectangle, destinationRectangle, angle, center, SDL_FLIP_NONE);
 }
 

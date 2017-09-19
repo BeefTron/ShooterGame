@@ -2,6 +2,8 @@
 
 #include "SDL.h"
 #include <string>
+#include "rectangle.h"
+#include "globals.h"
 
 class Graphics;
 
@@ -12,9 +14,13 @@ public:
 	virtual ~Sprite();
 	virtual void update();
 	void draw(Graphics &graphics, int x, int y);
+	Rectangle getBoundingBox() const;
+	// Determines which side the collision happened on
+	sides::Side getCollisionSide(Rectangle &other) const;
 protected:
 	SDL_Rect sourceRect;
 	SDL_Texture* spriteSheet;
 	float x, y;
+	Rectangle boundingBox;
 private:
 };

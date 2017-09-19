@@ -19,7 +19,7 @@ public:
 
 	void update(int elapsedTime);
 	
-	void draw(Graphics &graphics, float x, float y, float angle = 0, SDL_Point* center = NULL);
+	void draw(Graphics &graphics, float x, float y, float angle = 0, const SDL_Point* center = NULL);
 protected:
 	long timeToUpdate;
 	bool currentAnimationOnce;

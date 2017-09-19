@@ -5,13 +5,16 @@
 
 namespace player_constants {
 	const float WALK_SPEED = 0.2f;
-	SDL_Point PLAYER_CENTER = { 5 * globals::SPRITE_SCALE, 7 * globals::SPRITE_SCALE };
+	const SDL_Point PLAYER_CENTER = { 5 * globals::SPRITE_SCALE, 8 * globals::SPRITE_SCALE };
 }
 
 Player::Player() {}
 
-Player::Player(Graphics &graphics, int x, int y) :
-	AnimatedSprite(graphics, "sprites/Player.png", 0, 0, 16, 16, x, y, 100)
+Player::Player(Graphics &graphics, Vector2 spawnPoint) :
+	AnimatedSprite(graphics, "sprites/Player.png", 0, 0, 16, 16, spawnPoint.x, spawnPoint.y, 100),
+	dx(0),
+	dy(0),
+	facing(0.0f)
 {
 	graphics.loadImage("sprites/Player.png");
 	this->setupAnimation();
@@ -25,6 +28,14 @@ void Player::setupAnimation() {
 }
 
 void Player::animationDone(std::string currentAnimation) {}
+
+float Player::getX() const {
+	return this->x;
+}
+
+float Player::getY() const {
+	return this->y;
+}
 
 void Player::move(int horizontal, int vertical, float speedMult) {
 	this->dx = player_constants::WALK_SPEED * horizontal * speedMult;
@@ -43,6 +54,28 @@ void Player::setFacing(int mouseX, int mouseY) {
 	float playerY = this->y + (player_constants::PLAYER_CENTER.y);
 	float rads = atan2(mouseY - playerY, mouseX - playerX);
 	this->facing = rads * 180.0000 / 3.1416;
+}
+
+void Player::handleTileCollisions(std::vector<Rectangle> &others) {
+	for (int i = 0; i < others.size(); i++) {
+		sides::Side collisionSide = Sprite::getCollisionSide(others.at(i));
+		if (collisionSide != sides::NONE) {
+			switch (collisionSide) {
+			case sides::TOP:
+				this->y = others.at(i).getBottom() + 1;
+				break;
+			case sides::BOTTOM:
+				this->y = others.at(i).getTop() - this->boundingBox.getHeight() - 1;
+				break;
+			case sides::LEFT:
+				this->x = others.at(i).getRight() + 1;
+				break;
+			case sides::RIGHT:
+				this->x = others.at(i).getLeft() - this->boundingBox.getWidth() - 1;
+				break;
+			}
+		}
+	}
 }
 
 void Player::update(int elapsedTime) {

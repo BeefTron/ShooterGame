@@ -17,7 +17,7 @@ public:
 	SDL_Surface* loadImage(const std::string &filePath);
 
 	// Draws a texture to a certain part of the screen
-	void blitSurface(SDL_Texture* source, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle, float angle = 0, SDL_Point* center = NULL);
+	void blitSurface(SDL_Texture* source, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle, float angle = 0, const SDL_Point* center = NULL);
 
 	// Renders everything to the screen
 	void flip();
