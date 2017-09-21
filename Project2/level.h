@@ -5,6 +5,7 @@
 #include "globals.h"
 #include "tile.h"
 #include "rectangle.h"
+#include "animatedtile.h"
 
 class Graphics;
 struct SDL_Texture;
@@ -30,7 +31,12 @@ private:
 	std::vector<Tileset> tilesets;
 	std::vector<Rectangle> collisionRects;
 
+	std::vector<AnimatedTile> animatedTileList;
+	std::vector<AnimatedTileInfo> animatedTileInfos;
+
 	void loadMap(std::string mapName, Graphics &graphics);
+
+	Vector2 getTilesetPosition(Tileset tls, int gid, int tileWidth, int tileHeight);
 };
 
 //Tileset struct

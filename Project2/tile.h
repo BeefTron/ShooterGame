@@ -11,7 +11,7 @@ public:
 	Tile(SDL_Texture* tileset, Vector2 size, Vector2 tilesetPos, Vector2 mapPos);
 	void update(int elapsedTime);
 	void draw(Graphics &graphics);
-private:
+protected:
 	SDL_Texture* tileset;
 	Vector2 size;
 	Vector2 tilesetPos;
