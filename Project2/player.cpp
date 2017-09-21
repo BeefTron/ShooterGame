@@ -24,7 +24,8 @@ Player::Player(Graphics &graphics, Vector2 spawnPoint) :
 void Player::setupAnimation() {
 	this->addAnimation(1, 0, 0, "idle", 16, 16, Vector2(0, 0));
 	this->addAnimation(4, 0, 0, "move", 16, 16, Vector2(0,0));
-	this->addAnimation(2, 0, 15, "shoot", 16, 16, Vector2(0, 0));
+	this->addAnimation(2, 0, 16, "standAndShoot", 16, 16, Vector2(0, 0));
+	this->addAnimation(4, 0, 32, "moveAndShoot", 16, 16, Vector2(0, 0));
 }
 
 void Player::animationDone(std::string currentAnimation) {}
@@ -40,13 +41,23 @@ float Player::getY() const {
 void Player::move(int horizontal, int vertical, float speedMult) {
 	this->dx = player_constants::WALK_SPEED * horizontal * speedMult;
 	this->dy = player_constants::WALK_SPEED * vertical * speedMult;
-	this->playAnimation("move");
+	if (this->shooting) {
+		this->playAnimation("moveAndShoot");
+	}
+	else {
+		this->playAnimation("move");
+	}
 }
 
 void Player::stopMoving() {
 	this->dx = 0.0f;
 	this->dy = 0.0f;
-	this->playAnimation("idle");
+	if (this->shooting) {
+		this->playAnimation("standAndShoot");
+	}
+	else {
+		this->playAnimation("idle");
+	}
 }
 
 void Player::setFacing(int mouseX, int mouseY) {
@@ -54,6 +65,14 @@ void Player::setFacing(int mouseX, int mouseY) {
 	float playerY = this->y + (player_constants::PLAYER_CENTER.y);
 	float rads = atan2(mouseY - playerY, mouseX - playerX);
 	this->facing = rads * 180.0000 / 3.1416;
+}
+
+void Player::shoot() {
+	this->shooting = true;
+}
+
+void Player::holdFire() {
+	this->shooting = false;
 }
 
 void Player::handleTileCollisions(std::vector<Rectangle> &others) {

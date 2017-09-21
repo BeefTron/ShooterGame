@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="16" tileheight="16" nextobjectid="21">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="16" tileheight="16" nextobjectid="23">
  <tileset firstgid="1" name="street" tilewidth="16" tileheight="16" tilecount="30" columns="6">
   <image source="../tilesets/street.png" width="96" height="80"/>
   <tile id="12">
@@ -1009,7 +1009,7 @@
  </layer>
  <objectgroup name="collisions">
   <object id="6" x="0" y="384" width="640" height="16"/>
-  <object id="9" x="208" y="64" width="16" height="16"/>
+  <object id="9" x="211.897" y="51.9457" width="8.15761" height="8.02717"/>
   <object id="17" x="0" y="0" width="208" height="16"/>
   <object id="18" x="336" y="0" width="304" height="16"/>
   <object id="19" x="0" y="144" width="208" height="112"/>

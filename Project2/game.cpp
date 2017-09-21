@@ -52,8 +52,14 @@ void Game::gameLoop() {
 		}
 
 		int mouseX, mouseY;
-		SDL_GetMouseState(&mouseX, &mouseY);
+		int mouseState = SDL_GetMouseState(&mouseX, &mouseY);
 		this->player.setFacing(mouseX, mouseY);
+		if (mouseState == 1) {
+			this->player.shoot();
+		}
+		else {
+			this->player.holdFire();
+		}
 
 		int horizontal = 0;
 		int vertical = 0;

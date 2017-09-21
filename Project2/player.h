@@ -15,6 +15,8 @@ public:
 	void move(int vertical, int horizontal, float speedMult = 1);
 	void stopMoving();
 	void setFacing(int mouseX, int mouseY);
+	void shoot();
+	void holdFire();
 
 	virtual void animationDone(std::string currentAnimation);
 	virtual void setupAnimation();
@@ -26,7 +28,7 @@ public:
 	void handleTileCollisions(std::vector<Rectangle> &others);
 private:
 	float dx, dy;
-
+	bool shooting = false;
 	//Direction facing;
 	float facing;
 };
