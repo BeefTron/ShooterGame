@@ -37,11 +37,14 @@ private:
 struct Tileset {
 	SDL_Texture* Texture;
 	int FirstGid;
+	int LastGid;
 	Tileset() {
 		this->FirstGid = -1;
+		this->LastGid = -1;
 	}
-	Tileset(SDL_Texture* texture, int firstGid) {
+	Tileset(SDL_Texture* texture, int firstGid, int lastGid) {
 		this->Texture = texture;
 		this->FirstGid = firstGid;
+		this->LastGid = lastGid;
 	}
 };

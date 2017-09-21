@@ -54,14 +54,15 @@ void Level::loadMap(std::string mapName, Graphics &graphics) {
 	XMLElement* pTileset = mapNode->FirstChildElement("tileset");
 	if (pTileset != NULL) {
 		while (pTileset) {
-			int firstGid;
+			int firstGid, tileCount;
 			std::string path = pTileset->FirstChildElement("image")->Attribute("source");
 			path.erase(0, 3); // Because source gives the path to the tileset from the .tmx file, not this dir
 			std::stringstream ss;
 			ss << path;
 			pTileset->QueryIntAttribute("firstgid", &firstGid);
+			pTileset->QueryIntAttribute("tilecount", &tileCount);
 			SDL_Texture* tex = SDL_CreateTextureFromSurface(graphics.getRenderer(), graphics.loadImage(ss.str()));
-			this->tilesets.push_back(Tileset(tex, firstGid));
+			this->tilesets.push_back(Tileset(tex, firstGid, firstGid + tileCount - 1));
 
 			pTileset = pTileset->NextSiblingElement("tileset");
 		}
@@ -96,9 +97,11 @@ void Level::loadMap(std::string mapName, Graphics &graphics) {
 							// Get the tileset for this gid
 							Tileset tls;
 							for (int i = 0; i < this->tilesets.size(); i++) {
-								if (this->tilesets[i].FirstGid <= gid) {
+								if (this->tilesets[i].FirstGid <= gid && this->tilesets[i].LastGid >= gid) {
 									// This is the tileset we want
 									tls = this->tilesets.at(i);
+									// We need to adjust the gid range to start at 0 for each tileset
+									gid -= tls.FirstGid;
 									break;
 								}
 							}
@@ -125,9 +128,9 @@ void Level::loadMap(std::string mapName, Graphics &graphics) {
 							// Calculate the position of the tile in the tileset
 							int tilesetWidth, tilesetHeight;
 							SDL_QueryTexture(tls.Texture, NULL, NULL, &tilesetWidth, &tilesetHeight);
-							int tsxx = gid % (tilesetWidth / tileWidth) - 1;
+							int tsxx = gid % (tilesetWidth / tileWidth);
 							tsxx *= tileWidth;
-							int tsyy = (gid / (tilesetWidth / tileWidth));
+							int tsyy = gid / (tilesetWidth / tileWidth);
 							tsyy *= tileHeight;
 							Vector2 finalTilesetPos = Vector2(tsxx, tsyy);
 
