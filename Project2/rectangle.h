@@ -42,7 +42,10 @@ public:
 	bool isValidRectangle() const {
 		return (this->x >= 0 && this->y >= 0 && this->width >= 0 && this->height >= 0);
 	}
-
+	void setX(int x) { this->x = x; }
+	void setY(int y) { this->y = y; }
+	void setWidth(int width) { this->width = width; }
+	void setHeight(int height) { this->height = height; }
 private:
 	int x, y, width, height;
 };

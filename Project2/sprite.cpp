@@ -28,7 +28,8 @@ void Sprite::draw(Graphics &graphics, int x, int y) {
 }
 
 void Sprite::update() {
-	this->boundingBox = Rectangle(this->x, this->y, this->sourceRect.w * globals::SPRITE_SCALE, this->sourceRect.h * globals::SPRITE_SCALE);
+	//this->boundingBox = Rectangle(this->x, this->y, this->sourceRect.w * globals::SPRITE_SCALE, this->sourceRect.h * globals::SPRITE_SCALE);
+	this->updateBoundingBox(this->x, this->y, NULL, NULL);
 }
 
 Rectangle Sprite::getBoundingBox() const {
@@ -50,4 +51,19 @@ sides::Side Sprite::getCollisionSide(Rectangle &other) const {
 		}
 	}
 	return sideTypes[lowest];
+}
+
+void Sprite::updateBoundingBox(int x, int y, int width, int height) {
+	if (x != NULL) {
+		this->boundingBox.setX(x);
+	}
+	if (y != NULL) {
+		this->boundingBox.setY(y);
+	}
+	if (width != NULL) {
+		this->boundingBox.setWidth(width);
+	}
+	if (height != NULL) {
+		this->boundingBox.setHeight(height);
+	}
 }

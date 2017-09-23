@@ -5,27 +5,28 @@
 
 namespace player_constants {
 	const float WALK_SPEED = 0.2f;
-	const SDL_Point PLAYER_CENTER = { 5 * globals::SPRITE_SCALE, 8 * globals::SPRITE_SCALE };
+	const SDL_Point PLAYER_CENTER = { 4 * globals::SPRITE_SCALE, 4 * globals::SPRITE_SCALE };
 }
 
 Player::Player() {}
 
 Player::Player(Graphics &graphics, Vector2 spawnPoint) :
-	AnimatedSprite(graphics, "sprites/Player.png", 0, 0, 16, 16, spawnPoint.x, spawnPoint.y, 100),
+	AnimatedSprite(graphics, "sprites/PlayerCompressed.png", 0, 0, 15, 8, spawnPoint.x, spawnPoint.y, 100),
 	dx(0),
 	dy(0),
 	facing(0.0f)
 {
-	graphics.loadImage("sprites/Player.png");
+	graphics.loadImage("sprites/PlayerCompressed.png");
 	this->setupAnimation();
 	this->playAnimation("move");
+	this->updateBoundingBox(NULL, NULL, 9 * globals::SPRITE_SCALE, NULL);
 }
 
 void Player::setupAnimation() {
-	this->addAnimation(1, 0, 0, "idle", 16, 16, Vector2(0, 0));
-	this->addAnimation(4, 0, 0, "move", 16, 16, Vector2(0,0));
-	this->addAnimation(2, 0, 16, "standAndShoot", 16, 16, Vector2(0, 0));
-	this->addAnimation(4, 0, 32, "moveAndShoot", 16, 16, Vector2(0, 0));
+	this->addAnimation(1, 0, 0, "idle", 15, 8, Vector2(0, 0));
+	this->addAnimation(4, 0, 0, "move", 15, 8, Vector2(0,0));
+	this->addAnimation(2, 0, 8, "standAndShoot", 15, 8, Vector2(0, 0));
+	this->addAnimation(4, 0, 16, "moveAndShoot", 15, 8, Vector2(0, 0));
 }
 
 void Player::animationDone(std::string currentAnimation) {}

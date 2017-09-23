@@ -18,6 +18,7 @@ public:
 	// Determines which side the collision happened on
 	sides::Side getCollisionSide(Rectangle &other) const;
 protected:
+	void updateBoundingBox(int x, int y, int width, int height);
 	SDL_Rect sourceRect;
 	SDL_Texture* spriteSheet;
 	float x, y;
