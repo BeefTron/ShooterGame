@@ -1,10 +1,10 @@
 #include "animatedtile.h"
 #include "graphics.h"
 
-AnimatedTile::AnimatedTile(std::vector<Vector2> tilesetPositions, int duration, SDL_Texture* tileset, Vector2 size, Vector2 position) :
+AnimatedTile::AnimatedTile(std::vector<Vector2> tilesetPositions, std::vector<int> durations, SDL_Texture* tileset, Vector2 size, Vector2 position) :
 	Tile(tileset, size, tilesetPositions.at(0), position),
 	tilesetPositions(tilesetPositions),
-	duration(duration),
+	durations(durations),
 	tileToDraw(0)
 {}
 
@@ -16,7 +16,7 @@ void AnimatedTile::update(int elapsedTime) {
 		else {
 			this->tileToDraw++;
 		}
-		this->amountOfTime = this->duration;
+		this->amountOfTime = this->durations[tileToDraw];
 	}
 	else {
 		this->amountOfTime -= elapsedTime;

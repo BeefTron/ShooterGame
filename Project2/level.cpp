@@ -74,7 +74,7 @@ void Level::loadMap(std::string mapName, Graphics &graphics) {
 							if (pFrame != NULL) {
 								while (pFrame) {
 									ati.TileIds.push_back(pFrame->IntAttribute("tileid") + firstGid);
-									ati.Duration = pFrame->IntAttribute("duration"); // TODO - dynamic duration
+									ati.Durations.push_back(pFrame->IntAttribute("duration"));
 
 									pFrame = pFrame->NextSiblingElement("frame");
 								}
@@ -161,7 +161,7 @@ void Level::loadMap(std::string mapName, Graphics &graphics) {
 								for (int i = 0; i < ati.TileIds.size(); i++) {
 									tilesetPositions.push_back(this->getTilesetPosition(tls, ati.TileIds.at(i), tileWidth, tileHeight));
 								}
-								AnimatedTile tile(tilesetPositions, ati.Duration, tls.Texture, Vector2(tileWidth, tileHeight), finalTilePos);
+								AnimatedTile tile(tilesetPositions, ati.Durations, tls.Texture, Vector2(tileWidth, tileHeight), finalTilePos);
 								this->animatedTileList.push_back(tile);
 							}
 							else {

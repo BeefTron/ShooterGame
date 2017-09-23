@@ -6,7 +6,7 @@
 
 class AnimatedTile : public Tile {
 public:
-	AnimatedTile(std::vector<Vector2> tilesetPositions, int duration, SDL_Texture* tileset, Vector2 size, Vector2 position);
+	AnimatedTile(std::vector<Vector2> tilesetPositions, std::vector<int> durations, SDL_Texture* tileset, Vector2 size, Vector2 position);
 	void update(int elapsedTime);
 	void draw(Graphics &graphics);
 protected:
@@ -15,12 +15,12 @@ protected:
 private:
 	std::vector<Vector2> tilesetPositions;
 	int tileToDraw;
-	int duration;
+	std::vector<int> durations;
 };
 
 struct AnimatedTileInfo {
 	int TilesetsFirstGid;
 	int StartTileId;
 	std::vector<int> TileIds;
-	int Duration;
+	std::vector<int> Durations;
 };
