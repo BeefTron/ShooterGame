@@ -28,7 +28,6 @@ void Sprite::draw(Graphics &graphics, int x, int y) {
 }
 
 void Sprite::update() {
-	//this->boundingBox = Rectangle(this->x, this->y, this->sourceRect.w * globals::SPRITE_SCALE, this->sourceRect.h * globals::SPRITE_SCALE);
 	this->updateBoundingBox(this->x, this->y, NULL, NULL);
 }
 

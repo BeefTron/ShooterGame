@@ -29,6 +29,5 @@ public:
 private:
 	float dx, dy;
 	bool shooting = false;
-	//Direction facing;
 	float facing;
 };
