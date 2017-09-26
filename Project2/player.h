@@ -24,10 +24,15 @@ public:
 	float getX() const;
 	float getY() const;
 
+	inline int getHealth() { return this->health; }
+	inline int getLives() { return this->lives; }
+
 	// Handles collisions with all tiles the player is colliding with
 	void handleTileCollisions(std::vector<Rectangle> &others);
 private:
 	float dx, dy;
 	bool shooting = false;
 	float facing;
+	int health;
+	int lives;
 };

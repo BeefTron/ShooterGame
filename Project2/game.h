@@ -2,6 +2,7 @@
 
 #include "player.h"
 #include "level.h"
+#include "hud.h"
 
 class Graphics;
 
@@ -16,4 +17,5 @@ private:
 
 	Player player;
 	Level level;
+	HUD hud;
 };

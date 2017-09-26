@@ -14,7 +14,9 @@ Player::Player(Graphics &graphics, Vector2 spawnPoint) :
 	AnimatedSprite(graphics, "sprites/PlayerCompressed.png", 0, 0, 15, 8, spawnPoint.x, spawnPoint.y, 100),
 	dx(0),
 	dy(0),
-	facing(0.0f)
+	facing(0.0f),
+	health(100),
+	lives(3)
 {
 	graphics.loadImage("sprites/PlayerCompressed.png");
 	this->setupAnimation();
@@ -24,7 +26,7 @@ Player::Player(Graphics &graphics, Vector2 spawnPoint) :
 
 void Player::setupAnimation() {
 	this->addAnimation(1, 0, 0, "idle", 15, 8, Vector2(0, 0));
-	this->addAnimation(4, 0, 0, "move", 15, 8, Vector2(0,0));
+	this->addAnimation(4, 0, 0, "move", 15, 8, Vector2(0, 0));
 	this->addAnimation(2, 0, 8, "standAndShoot", 15, 8, Vector2(0, 0));
 	this->addAnimation(4, 0, 16, "moveAndShoot", 15, 8, Vector2(0, 0));
 }

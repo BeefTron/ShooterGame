@@ -22,6 +22,11 @@ Sprite::Sprite(Graphics &graphics, const std::string &filePath, int sourceX, int
 
 Sprite::~Sprite() {}
 
+void Sprite::draw(Graphics &graphics) {
+	SDL_Rect destinationRectangle = { this->x, this->y, this->sourceRect.w * globals::SPRITE_SCALE, this->sourceRect.h * globals::SPRITE_SCALE };
+	graphics.blitSurface(this->spriteSheet, &this->sourceRect, &destinationRectangle);
+}
+
 void Sprite::draw(Graphics &graphics, int x, int y) {
 	SDL_Rect destinationRectangle = { x, y, this->sourceRect.w * globals::SPRITE_SCALE, this->sourceRect.h * globals::SPRITE_SCALE };
 	graphics.blitSurface(this->spriteSheet, &this->sourceRect, &destinationRectangle);
@@ -50,6 +55,10 @@ sides::Side Sprite::getCollisionSide(Rectangle &other) const {
 		}
 	}
 	return sideTypes[lowest];
+}
+
+void Sprite::setSourceRectX(int sourceX) {
+	this->sourceRect.x = sourceX;
 }
 
 void Sprite::updateBoundingBox(int x, int y, int width, int height) {

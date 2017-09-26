@@ -27,6 +27,7 @@ void Game::gameLoop() {
 
 	this->level = Level("street", Vector2(100, 100), graphics);
 	this->player = Player(graphics, this->level.getPlayerSpawn());
+	this->hud = HUD(graphics, this->player);
 
 	int LAST_UPDATE_TIME = SDL_GetTicks();
 
@@ -103,6 +104,7 @@ void Game::draw(Graphics &graphics) {
 
 	this->level.draw(graphics);
 	this->player.draw(graphics);
+	this->hud.draw(graphics);
 
 	graphics.flip();
 }
@@ -110,6 +112,7 @@ void Game::draw(Graphics &graphics) {
 void Game::update(int elapsedTime) {
 	this->player.update(elapsedTime);
 	this->level.update(elapsedTime);
+	this->hud.update(elapsedTime);
 
 	// Check collisions
 	std::vector<Rectangle> others;

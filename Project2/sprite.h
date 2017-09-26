@@ -13,10 +13,14 @@ public:
 	Sprite(Graphics &graphics, const std::string &filePath, int sourceX, int sourceY, int width, int height, float posX, float posY);
 	virtual ~Sprite();
 	virtual void update();
+	void draw(Graphics &graphics);
 	void draw(Graphics &graphics, int x, int y);
 	Rectangle getBoundingBox() const;
 	// Determines which side the collision happened on
 	sides::Side getCollisionSide(Rectangle &other) const;
+	inline float getX() const { return this->x; }
+	inline float getY() const { return this->y; }
+	void setSourceRectX(int sourceX);
 protected:
 	void updateBoundingBox(int x, int y, int width, int height);
 	SDL_Rect sourceRect;
