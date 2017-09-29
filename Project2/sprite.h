@@ -21,6 +21,8 @@ public:
 	inline float getX() const { return this->x; }
 	inline float getY() const { return this->y; }
 	void setSourceRectX(int sourceX);
+	void setSourceRectW(int width);
+	void setSourceRectH(int height);
 protected:
 	void updateBoundingBox(int x, int y, int width, int height);
 	SDL_Rect sourceRect;

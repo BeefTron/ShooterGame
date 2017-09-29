@@ -61,6 +61,14 @@ void Sprite::setSourceRectX(int sourceX) {
 	this->sourceRect.x = sourceX;
 }
 
+void Sprite::setSourceRectW(int width) {
+	this->sourceRect.w = width;
+}
+
+void Sprite::setSourceRectH(int height) {
+	this->sourceRect.h = height;
+}
+
 void Sprite::updateBoundingBox(int x, int y, int width, int height) {
 	if (x != NULL) {
 		this->boundingBox.setX(x);

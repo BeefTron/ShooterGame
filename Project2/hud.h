@@ -15,5 +15,6 @@ public:
 private:
 	Player player;
 	Sprite healthBarSprite;
+	Sprite currentHealthSprite;
 	std::vector<Sprite> livesSprites;
 };
