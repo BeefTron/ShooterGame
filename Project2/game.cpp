@@ -6,7 +6,7 @@
 
 namespace {
 	const int FPS = 60;
-	const int MAX_FRAME_TIME = 6 * 1000 / FPS;
+	const int MAX_FRAME_TIME = 1000 / FPS;
 }
 
 Game::Game() {
