@@ -2,10 +2,12 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "globals.h"
 #include "tile.h"
 #include "rectangle.h"
 #include "animatedtile.h"
+#include "door.h"
 
 class Graphics;
 struct SDL_Texture;
@@ -15,15 +17,17 @@ struct Tileset;
 class Level {
 public:
 	Level();
-	Level(std::string mapName, Vector2 spawnPoint, Graphics &graphics);
+	Level(std::string mapName, Graphics &graphics);
 	~Level();
 	void update(int elapsedTime);
 	void draw(Graphics &graphics);
+	Door checkDoorCollisions(const Rectangle &playerBox);
 	std::vector<Rectangle> checkTileCollisions(const Rectangle &other);
-	Vector2 getPlayerSpawn() const;
+	Vector2 getPlayerSpawn(std::string from = "");
+	inline std::string getMapName() { return this->mapName; }
 private:
 	std::string mapName;
-	Vector2 spawnPoint;
+	std::map<std::string, Vector2> spawnPointMap;
 	Vector2 size;
 	Vector2 tileSize;
 	SDL_Texture* backgroundTexture;
@@ -33,6 +37,8 @@ private:
 
 	std::vector<AnimatedTile> animatedTileList;
 	std::vector<AnimatedTileInfo> animatedTileInfos;
+
+	std::vector<Door> doorList;
 
 	void loadMap(std::string mapName, Graphics &graphics);
 

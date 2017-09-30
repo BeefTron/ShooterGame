@@ -100,6 +100,13 @@ void Player::handleTileCollisions(std::vector<Rectangle> &others) {
 	}
 }
 
+void Player::handleDoorCollision(Door &door, Level &level, Graphics &graphics) {
+	std::string from = level.getMapName();
+	level = Level(door.getDestination(), graphics);
+	this->x = level.getPlayerSpawn(from).x;
+	this->y = level.getPlayerSpawn(from).y;
+}
+
 void Player::update(int elapsedTime) {
 	this->x += this->dx * elapsedTime;
 	this->y += this->dy * elapsedTime;

@@ -25,7 +25,7 @@ void Game::gameLoop() {
 	Input input;
 	SDL_Event event;
 
-	this->level = Level("street", Vector2(100, 100), graphics);
+	this->level = Level("street", graphics);
 	this->player = Player(graphics, this->level.getPlayerSpawn());
 	this->hud = HUD(graphics, this->player);
 
@@ -92,6 +92,7 @@ void Game::gameLoop() {
 		}
 		const int CURRENT_TIME_MS = SDL_GetTicks();
 		int ELAPSED_TIME_MS = CURRENT_TIME_MS - LAST_UPDATE_TIME;
+		this->graphics = graphics;
 		this->update(std::min(ELAPSED_TIME_MS, MAX_FRAME_TIME));
 		LAST_UPDATE_TIME = CURRENT_TIME_MS;
 
@@ -119,5 +120,9 @@ void Game::update(int elapsedTime) {
 	if ((others = this->level.checkTileCollisions(this->player.getBoundingBox())).size() > 0) {
 		// Player collided with at least one tile
 		this->player.handleTileCollisions(others);
+	}
+	Door door = this->level.checkDoorCollisions(this->player.getBoundingBox());
+	if (door.getDestination() != "invalid") {
+		this->player.handleDoorCollision(door, level, this->graphics);
 	}
 }

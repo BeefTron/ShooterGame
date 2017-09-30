@@ -12,9 +12,8 @@ using namespace tinyxml2;
 
 Level::Level() {}
 
-Level::Level(std::string mapName, Vector2 spawnPoint, Graphics &graphics) :
+Level::Level(std::string mapName, Graphics &graphics) :
 	mapName(mapName),
-	spawnPoint(spawnPoint),
 	size(Vector2()) 
 {
 	this->loadMap(mapName, graphics);
@@ -218,9 +217,27 @@ void Level::loadMap(std::string mapName, Graphics &graphics) {
 						const char* name = pObject->Attribute("name");
 						std::stringstream ss;
 						ss << name;
-						if (ss.str() == "player") {
-							this->spawnPoint = Vector2(std::ceil(x) * globals::SPRITE_SCALE, std::ceil(y) * globals::SPRITE_SCALE);
-						}
+						this->spawnPointMap[ss.str()] = Vector2(std::ceil(x) * globals::SPRITE_SCALE, std::ceil(y) * globals::SPRITE_SCALE);
+						pObject = pObject->NextSiblingElement("object");
+					}
+				}
+			}
+			else if (ss.str() == "doors") {
+				XMLElement* pObject = pObjectGroup->FirstChildElement("object");
+				if (pObject != NULL) {
+					while (pObject) {
+						float x = pObject->FloatAttribute("x");
+						float y = pObject->FloatAttribute("y");
+						float w = pObject->FloatAttribute("width");
+						float h = pObject->FloatAttribute("height");
+						Rectangle rect = Rectangle(x, y, w, h);
+
+						const char* dest = pObject->Attribute("name");
+						std::stringstream ss;
+						ss << dest;
+						Door door = Door(rect, ss.str());
+						this->doorList.push_back(door);
+
 						pObject = pObject->NextSiblingElement("object");
 					}
 				}
@@ -245,6 +262,15 @@ void Level::draw(Graphics &graphics) {
 	}
 }
 
+Door Level::checkDoorCollisions(const Rectangle &playerBox) {
+	for (int i = 0; i < this->doorList.size(); i++) {
+		if (this->doorList.at(i).collidesWith(playerBox)) {
+			return this->doorList.at(i);
+		}
+	}
+	return Door();
+}
+
 std::vector<Rectangle> Level::checkTileCollisions(const Rectangle &other) {
 	std::vector<Rectangle> collidingRects;
 	for (int i = 0; i < this->collisionRects.size(); i++) {
@@ -255,8 +281,14 @@ std::vector<Rectangle> Level::checkTileCollisions(const Rectangle &other) {
 	return collidingRects;
 }
 
-Vector2 Level::getPlayerSpawn() const {
-	return this->spawnPoint;
+Vector2 Level::getPlayerSpawn(std::string from) {
+	if (from == "" || this->spawnPointMap.find(from) == this->spawnPointMap.end()) {
+		// from is not an existing key in spawnPointMap. Just use default spawn
+		return this->spawnPointMap["default"];
+	}
+	else {
+		return this->spawnPointMap[from];
+	}	
 }
 
 Vector2 Level::getTilesetPosition(Tileset tls, int gid, int tileWidth, int tileHeight) {

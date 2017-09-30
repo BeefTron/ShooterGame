@@ -1,6 +1,7 @@
 #pragma once
 
 #include "animatedsprite.h"
+#include "level.h"
 #include "globals.h"
 
 class Graphics;
@@ -29,6 +30,7 @@ public:
 
 	// Handles collisions with all tiles the player is colliding with
 	void handleTileCollisions(std::vector<Rectangle> &others);
+	void handleDoorCollision(Door &door, Level &level, Graphics &graphics);
 private:
 	float dx, dy;
 	bool shooting = false;
