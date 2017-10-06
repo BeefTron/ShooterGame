@@ -20,6 +20,8 @@ public:
 	sides::Side getCollisionSide(Rectangle &other) const;
 	inline float getX() const { return this->x; }
 	inline float getY() const { return this->y; }
+	inline float getXCenter() const { return this->x + (this->sourceRect.w / 2) * globals::SPRITE_SCALE; }
+	inline float getYCenter() const { return this->y + (this->sourceRect.h / 2) * globals::SPRITE_SCALE; }
 	void setSourceRectX(int sourceX);
 	void setSourceRectW(int width);
 	void setSourceRectH(int height);

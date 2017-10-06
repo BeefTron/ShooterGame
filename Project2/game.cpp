@@ -112,7 +112,7 @@ void Game::draw(Graphics &graphics) {
 
 void Game::update(int elapsedTime) {
 	this->player.update(elapsedTime);
-	this->level.update(elapsedTime);
+	this->level.update(elapsedTime, this->player);
 	this->hud.update(elapsedTime);
 
 	// Check collisions

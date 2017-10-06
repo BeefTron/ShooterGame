@@ -3,11 +3,6 @@
 #include "globals.h"
 #include <math.h>
 
-namespace player_constants {
-	const float WALK_SPEED = 0.2f;
-	const SDL_Point PLAYER_CENTER = { 4 * globals::SPRITE_SCALE, 4 * globals::SPRITE_SCALE };
-}
-
 Player::Player() {}
 
 Player::Player(Graphics &graphics, Vector2 spawnPoint) :
@@ -33,14 +28,6 @@ void Player::setupAnimation() {
 
 void Player::animationDone(std::string currentAnimation) {}
 
-float Player::getX() const {
-	return this->x;
-}
-
-float Player::getY() const {
-	return this->y;
-}
-
 void Player::move(int horizontal, int vertical, float speedMult) {
 	this->dx = player_constants::WALK_SPEED * horizontal * speedMult;
 	this->dy = player_constants::WALK_SPEED * vertical * speedMult;
@@ -64,9 +51,7 @@ void Player::stopMoving() {
 }
 
 void Player::setFacing(int mouseX, int mouseY) {
-	float playerX = this->x + (player_constants::PLAYER_CENTER.x);
-	float playerY = this->y + (player_constants::PLAYER_CENTER.y);
-	float rads = atan2(mouseY - playerY, mouseX - playerX);
+	float rads = atan2(mouseY - this->getYCenter(), mouseX - this->getXCenter());
 	this->facing = rads * 180.0000 / 3.1416;
 }
 

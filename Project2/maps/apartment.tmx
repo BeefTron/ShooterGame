@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="16" tileheight="16" nextobjectid="79">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="16" tileheight="16" nextobjectid="82">
  <tileset firstgid="1" name="apartment_floor" tilewidth="16" tileheight="16" tilecount="24" columns="4">
   <image source="../tilesets/apartment.png" width="64" height="96"/>
  </tileset>
@@ -1981,6 +1981,17 @@
  </objectgroup>
  <objectgroup color="#00ff00" name="spawnPoints">
   <object id="2" name="default" x="235.576" y="350.849" width="8" height="8">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup color="#ff0000" name="enemies">
+  <object id="79" name="test" x="74.6667" y="326.667" width="6" height="6">
+   <ellipse/>
+  </object>
+  <object id="80" name="test" x="372.667" y="312.667" width="4" height="4">
+   <ellipse/>
+  </object>
+  <object id="81" name="test" x="294.667" y="98.6667" width="6" height="6">
    <ellipse/>
   </object>
  </objectgroup>

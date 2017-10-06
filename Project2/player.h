@@ -6,6 +6,11 @@
 
 class Graphics;
 
+namespace player_constants {
+	const float WALK_SPEED = 0.2f;
+	const SDL_Point PLAYER_CENTER = { 4 * globals::SPRITE_SCALE, 4 * globals::SPRITE_SCALE };
+}
+
 class Player : public AnimatedSprite {
 public:
 	Player();
@@ -22,8 +27,8 @@ public:
 	virtual void animationDone(std::string currentAnimation);
 	virtual void setupAnimation();
 
-	float getX() const;
-	float getY() const;
+	inline float getXCenter() const { return this->x + player_constants::PLAYER_CENTER.x; }
+	inline float getYCenter() const { return this->y + player_constants::PLAYER_CENTER.y; }
 
 	inline int getHealth() { return this->health; }
 	inline int getLives() { return this->lives; }
