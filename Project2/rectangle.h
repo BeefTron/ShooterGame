@@ -39,6 +39,14 @@ public:
 			this->getBottom() >= other.getTop();
 	}
 
+	bool containsPoint(int x, int y) const {
+		return
+			this->getRight() >= x &&
+			this->getLeft() <= x &&
+			this->getTop() <= y &&
+			this->getBottom() >= y;
+	}
+
 	bool isValidRectangle() const {
 		return (this->x >= 0 && this->y >= 0 && this->width >= 0 && this->height >= 0);
 	}

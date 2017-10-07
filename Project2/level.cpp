@@ -9,6 +9,7 @@
 #include <sstream>
 #include <algorithm>
 #include <cmath>
+#include <utility>
 
 using namespace tinyxml2;
 
@@ -271,7 +272,10 @@ void Level::update(int elapsedTime, Player &player) {
 	for (int i = 0; i < this->animatedTileList.size(); i++) {
 		this->animatedTileList.at(i).update(elapsedTime);
 	}
+	Vector2 playerPos = Vector2(player.getCenterX(), player.getCenterY());
 	for (int i = 0; i < this->enemies.size(); i++) {
+		Vector2 enemyPos = Vector2(this->enemies.at(i)->getCenterX(), this->enemies.at(i)->getCenterY());
+		this->enemies.at(i)->setInSight(this->BresenhamSight(playerPos, enemyPos));
 		this->enemies.at(i)->update(elapsedTime, player);
 	}
 }
@@ -305,6 +309,56 @@ std::vector<Rectangle> Level::checkTileCollisions(const Rectangle &other) {
 		}
 	}
 	return collidingRects;
+}
+
+bool Level::checkPointCollisions(int x, int y) const {
+	for (int i = 0; i < this->collisionRects.size(); i++) {
+		if (this->collisionRects.at(i).containsPoint(x, y)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Level::BresenhamSight(Vector2 p1, Vector2 p2) const {
+	bool steep = abs(p2.y - p1.y) > abs(p2.x - p1.x);
+	if (steep) {
+		std::swap(p1.x, p1.y);
+		std::swap(p2.x, p2.y);
+	}
+	if (p1.x > p2.x) {
+		std::swap(p1.x, p2.x);
+		std::swap(p1.y, p2.y);
+	}
+	int dx = p2.x - p1.x;
+	int dy = abs(p2.y - p1.y);
+	int err = 0;
+	int ystep;
+	int y = p1.y;
+	if (p1.y < p2.y) {
+		ystep = 1;
+	}
+	else {
+		ystep = -1;
+	}
+	for (int x = p1.x; x <= p2.x; x++) {
+		if (steep) {
+			if (this->checkPointCollisions(y, x)) {
+				return false;
+			}
+		}
+		else {
+			if (this->checkPointCollisions(x, y)) {
+				return false;
+			}
+		}
+		err += dy;
+		if (2 * err >= dx) {
+			y += ystep;
+			err -= dx;
+		}
+	}
+	return true;
 }
 
 Vector2 Level::getPlayerSpawn(std::string from) {

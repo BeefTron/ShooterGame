@@ -25,6 +25,8 @@ public:
 	void draw(Graphics &graphics);
 	Door checkDoorCollisions(const Rectangle &playerBox);
 	std::vector<Rectangle> checkTileCollisions(const Rectangle &other);
+	bool checkPointCollisions(int x, int y) const;
+	bool BresenhamSight(Vector2 p1, Vector2 p2) const;
 	Vector2 getPlayerSpawn(std::string from = "");
 	inline std::string getMapName() { return this->mapName; }
 private:

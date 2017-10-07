@@ -15,7 +15,10 @@ public:
 	virtual void draw(Graphics &graphics);
 	inline int getMaxHealth() const { return this->maxHealth; }
 	inline int getHealth() const { return this->currentHealth; }
+	void setInSight(bool enemyInSight);
+	bool checkInSight();
 protected:
+	// -180 - 180 degrees
 	float facing;
 	int maxHealth;
 	int currentHealth;
@@ -25,6 +28,8 @@ protected:
 	// Enemy will move in whatever direction they are facing
 	void move();
 	void stopMoving();
+	// Whether the player and the Enemy are within sight of each other
+	bool inSight;
 };
 
 class Alien : public Enemy {
@@ -36,4 +41,5 @@ public:
 	void animationDone(std::string currentAnimation);
 	void setupAnimation();
 private:
+	Vector2 lastKnownPlayerLocation;
 };
