@@ -38,19 +38,19 @@ void Enemy::stopMoving() {
 }
 
 
-// TestEnemy class
+// Alien Enemy class
 
-TestEnemy::TestEnemy() {}
+Alien::Alien() {}
 
-TestEnemy::TestEnemy(Graphics &graphics, Vector2 spawnPoint) :
-	Enemy(graphics, "sprites/arrow.png", 0, 0, 16, 16, spawnPoint, 140)
+Alien::Alien(Graphics &graphics, Vector2 spawnPoint) :
+	Enemy(graphics, "sprites/alien.png", 0, 0, 16, 16, spawnPoint, 140)
 {
 	this->setupAnimation();
 	this->playAnimation("idle");
 	this->speed = 0.1f;
 }
 
-void TestEnemy::update(int elapsedTime, Player &player) {
+void Alien::update(int elapsedTime, Player &player) {
 	float distance = sqrt(std::pow(abs(this->getCenterX() - player.getCenterX()), 2) + std::pow(abs(this->getCenterY() - player.getCenterY()), 2));
 	if (distance < 200) {
 		this->setFacing(player.getCenterX(), player.getCenterY());
@@ -60,7 +60,7 @@ void TestEnemy::update(int elapsedTime, Player &player) {
 		else {
 			this->stopMoving();
 		}
-		this->playAnimation("idleRed");
+		this->playAnimation("alert");
 	}
 	else {
 		this->stopMoving();
@@ -69,15 +69,15 @@ void TestEnemy::update(int elapsedTime, Player &player) {
 	Enemy::update(elapsedTime, player);
 }
 
-void TestEnemy::draw(Graphics &graphics) {
+void Alien::draw(Graphics &graphics) {
 	Enemy::draw(graphics);
 }
 
-void TestEnemy::animationDone(std::string currentAnimation) {
+void Alien::animationDone(std::string currentAnimation) {
 
 }
 
-void TestEnemy::setupAnimation() {
+void Alien::setupAnimation() {
 	this->addAnimation(1, 0, 0, "idle", 16, 16, Vector2(0, 0));
-	this->addAnimation(1, 0, 16, "idleRed", 16, 16, Vector2(0, 0));
+	this->addAnimation(4, 0, 32, "alert", 16, 16, Vector2(0, 0));
 }

@@ -254,8 +254,8 @@ void Level::loadMap(std::string mapName, Graphics &graphics) {
 						const char* type = pObject->Attribute("name");
 						std::stringstream ss;
 						ss << type;
-						if (ss.str() == "test") {
-							this->enemies.push_back(new TestEnemy(graphics, Vector2(std::floor(x) * globals::SPRITE_SCALE, std::floor(y) * globals::SPRITE_SCALE)));
+						if (ss.str() == "alien") {
+							this->enemies.push_back(new Alien(graphics, Vector2(std::floor(x) * globals::SPRITE_SCALE, std::floor(y) * globals::SPRITE_SCALE)));
 						}
 
 						pObject = pObject->NextSiblingElement("object");

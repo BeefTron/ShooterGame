@@ -1985,13 +1985,13 @@
   </object>
  </objectgroup>
  <objectgroup color="#ff0000" name="enemies">
-  <object id="79" name="test" x="74.6667" y="326.667" width="6" height="6">
+  <object id="79" name="alien" x="74.6667" y="326.667" width="6" height="6">
    <ellipse/>
   </object>
-  <object id="80" name="test" x="372.667" y="312.667" width="4" height="4">
+  <object id="80" name="alien" x="372.667" y="312.667" width="4" height="4">
    <ellipse/>
   </object>
-  <object id="81" name="test" x="294.667" y="98.6667" width="6" height="6">
+  <object id="81" name="alien" x="294.667" y="98.6667" width="6" height="6">
    <ellipse/>
   </object>
  </objectgroup>

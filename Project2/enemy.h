@@ -27,10 +27,10 @@ protected:
 	void stopMoving();
 };
 
-class TestEnemy : public Enemy {
+class Alien : public Enemy {
 public:
-	TestEnemy();
-	TestEnemy(Graphics &graphics, Vector2 spawnPoint);
+	Alien();
+	Alien(Graphics &graphics, Vector2 spawnPoint);
 	void update(int elapsedTime, Player &player);
 	void draw(Graphics &graphics);
 	void animationDone(std::string currentAnimation);
