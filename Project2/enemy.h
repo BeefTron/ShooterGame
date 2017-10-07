@@ -20,6 +20,11 @@ protected:
 	int maxHealth;
 	int currentHealth;
 	void setFacing(float x, float y);
+	float speed = 0;
+	float dx, dy;
+	// Enemy will move in whatever direction they are facing
+	void move();
+	void stopMoving();
 };
 
 class TestEnemy : public Enemy {

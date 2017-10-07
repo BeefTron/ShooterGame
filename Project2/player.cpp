@@ -51,7 +51,7 @@ void Player::stopMoving() {
 }
 
 void Player::setFacing(int mouseX, int mouseY) {
-	float rads = atan2(mouseY - this->getYCenter(), mouseX - this->getXCenter());
+	float rads = atan2(mouseY - this->getCenterY(), mouseX - this->getCenterX());
 	this->facing = rads * 180.0000 / 3.1416;
 }
 

@@ -14,6 +14,8 @@ Enemy::Enemy(Graphics &graphics, std::string filePath, int sourceX, int sourceY,
 {}
 
 void Enemy::update(int elapsedTime, Player &player) {
+	this->x += this->dx * elapsedTime;
+	this->y += this->dy * elapsedTime;
 	AnimatedSprite::update(elapsedTime);
 }
 
@@ -22,7 +24,17 @@ void Enemy::draw(Graphics &graphics) {
 }
 
 void Enemy::setFacing(float x, float y) {
-	this->facing = atan2(y - this->getYCenter(), x - this->getXCenter()) * 180.0000 / 3.1416;
+	this->facing = atan2(y - this->getCenterY(), x - this->getCenterX()) * 180.0000 / 3.1416;
+}
+
+void Enemy::move() {
+	this->dx = cos(facing * 3.1416 / 180.0000) * this->speed;
+	this->dy = sin(facing * 3.1416 / 180.0000) * this->speed;
+}
+
+void Enemy::stopMoving() {
+	this->dx = 0.0f;
+	this->dy = 0.0f;
 }
 
 
@@ -35,15 +47,23 @@ TestEnemy::TestEnemy(Graphics &graphics, Vector2 spawnPoint) :
 {
 	this->setupAnimation();
 	this->playAnimation("idle");
+	this->speed = 0.1f;
 }
 
 void TestEnemy::update(int elapsedTime, Player &player) {
-	float distance = sqrt(std::pow(abs(this->getXCenter() - player.getXCenter()), 2) + std::pow(abs(this->getYCenter() - player.getYCenter()), 2));
+	float distance = sqrt(std::pow(abs(this->getCenterX() - player.getCenterX()), 2) + std::pow(abs(this->getCenterY() - player.getCenterY()), 2));
 	if (distance < 200) {
-		this->setFacing(player.getXCenter(), player.getYCenter());
+		this->setFacing(player.getCenterX(), player.getCenterY());
+		if (distance > 1) {
+			this->move();
+		}
+		else {
+			this->stopMoving();
+		}
 		this->playAnimation("idleRed");
 	}
 	else {
+		this->stopMoving();
 		this->playAnimation("idle");
 	}
 	Enemy::update(elapsedTime, player);

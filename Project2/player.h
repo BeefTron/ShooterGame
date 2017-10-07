@@ -27,8 +27,8 @@ public:
 	virtual void animationDone(std::string currentAnimation);
 	virtual void setupAnimation();
 
-	inline float getXCenter() const { return this->x + player_constants::PLAYER_CENTER.x; }
-	inline float getYCenter() const { return this->y + player_constants::PLAYER_CENTER.y; }
+	inline float getCenterX() const { return this->x + player_constants::PLAYER_CENTER.x; }
+	inline float getCenterY() const { return this->y + player_constants::PLAYER_CENTER.y; }
 
 	inline int getHealth() { return this->health; }
 	inline int getLives() { return this->lives; }
