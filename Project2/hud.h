@@ -9,11 +9,10 @@ class Graphics;
 class HUD {
 public:
 	HUD();
-	HUD(Graphics &graphics, Player player);
-	void update(int elapsedTime);
+	HUD(Graphics &graphics);
+	void update(int elapsedTime, Player &player);
 	void draw(Graphics &graphics);
 private:
-	Player player;
 	Sprite healthBarSprite;
 	Sprite currentHealthSprite;
 	std::vector<Sprite> livesSprites;

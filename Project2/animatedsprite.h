@@ -21,6 +21,7 @@ public:
 	
 	void draw(Graphics &graphics, float x, float y, float angle = 0, const SDL_Point* center = NULL);
 protected:
+	unsigned frameIndex;
 	long timeToUpdate;
 	bool currentAnimationOnce;
 	std::string currentAnimation;
@@ -33,6 +34,7 @@ protected:
 
 	void stopAnimation();
 
+	void setPlaying(bool play);
 	void setVisible(bool visible);
 
 	// Logic that happens when an animation ends
@@ -44,7 +46,7 @@ private:
 	std::map<std::string, std::vector<SDL_Rect> > animations;
 	std::map<std::string, Vector2> offsets;
 
-	unsigned frameIndex;
 	unsigned long timeElapsed;
-	bool visible;
+	bool play;
+	bool visible = true;
 };

@@ -10,7 +10,7 @@ AnimatedSprite::AnimatedSprite(Graphics &graphics, const std::string &filePath, 
 	frameIndex(0),
 	timeToUpdate(timeToUpdate),
 	timeElapsed(0),
-	visible(true),
+	play(true),
 	currentAnimationOnce(false),
 	currentAnimation("")
 {}
@@ -38,28 +38,33 @@ void AnimatedSprite::playAnimation(std::string animation, bool once) {
 	}
 }
 
+void AnimatedSprite::setPlaying(bool play) {
+	this->play = play;
+}
+
 void AnimatedSprite::setVisible(bool visible) {
 	this->visible = visible;
 }
 
 void AnimatedSprite::stopAnimation() {
-	this->frameIndex = 0;
 	this->animationDone(this->currentAnimation);
 }
 
 void AnimatedSprite::update(int elapsedTime) {
 	Sprite::update();
 
-	this->timeElapsed += elapsedTime;
-	if (this->timeElapsed > this->timeToUpdate) {
-		this->timeElapsed -= timeToUpdate;
-		if (this->frameIndex < this->animations[this->currentAnimation].size() - 1) {
-			this->frameIndex++;
-		} else {
-			if (currentAnimationOnce == true) {
-				this->setVisible(false);
+	if (this->play) {
+		this->timeElapsed += elapsedTime;
+		if (this->timeElapsed > this->timeToUpdate) {
+			this->timeElapsed -= this->timeToUpdate;
+			if (this->frameIndex < this->animations[this->currentAnimation].size() - 1) {
+				this->frameIndex++;
+			} else {
+				if (this->currentAnimationOnce) {
+					this->setPlaying(false);
+				}
+				this->stopAnimation();
 			}
-			this->stopAnimation();
 		}
 	}
 }

@@ -27,7 +27,7 @@ void Game::gameLoop() {
 
 	this->level = Level("street", graphics);
 	this->player = Player(graphics, this->level.getPlayerSpawn());
-	this->hud = HUD(graphics, this->player);
+	this->hud = HUD(graphics);
 
 	int LAST_UPDATE_TIME = SDL_GetTicks();
 
@@ -52,44 +52,48 @@ void Game::gameLoop() {
 			return;
 		}
 
-		int mouseX, mouseY;
-		int mouseState = SDL_GetMouseState(&mouseX, &mouseY);
-		this->player.setFacing(mouseX, mouseY);
-		if (mouseState == 1) {
-			this->player.shoot();
-		}
-		else {
-			this->player.holdFire();
-		}
-
-		int horizontal = 0;
-		int vertical = 0;
-		if (input.isKeyHeld(SDL_SCANCODE_A)) {
-			horizontal -= 1;
-		}
-		if (input.isKeyHeld(SDL_SCANCODE_D)) {
-			horizontal += 1;
-		}
-		if (input.isKeyHeld(SDL_SCANCODE_W)) {
-			vertical -= 1;
-		}
-		if (input.isKeyHeld(SDL_SCANCODE_S)) {
-			vertical += 1;
-		}
-		if (!horizontal && !vertical) {
-			this->player.stopMoving();
-		}
-		else {
-			if (input.isKeyHeld(SDL_SCANCODE_LSHIFT)) {
-				this->player.move(horizontal, vertical, 2.0);
-			}
-			else if (input.isKeyHeld(SDL_SCANCODE_LCTRL)) {
-				this->player.move(horizontal, vertical, 0.5);
+		if (this->player.getHealth() > 0) {
+			int mouseX, mouseY;
+			int mouseState = SDL_GetMouseState(&mouseX, &mouseY);
+			this->player.setFacing(mouseX, mouseY);
+			if (mouseState == 1) {
+				this->player.setShooting(true);
 			}
 			else {
-				this->player.move(horizontal, vertical);
+				this->player.setShooting(false);
+			}
+
+			int horizontal = 0;
+			int vertical = 0;
+			if (input.isKeyHeld(SDL_SCANCODE_A)) {
+				horizontal -= 1;
+			}
+			if (input.isKeyHeld(SDL_SCANCODE_D)) {
+				horizontal += 1;
+			}
+			if (input.isKeyHeld(SDL_SCANCODE_W)) {
+				vertical -= 1;
+			}
+			if (input.isKeyHeld(SDL_SCANCODE_S)) {
+				vertical += 1;
+			}
+			if (!horizontal && !vertical) {
+				this->player.stopMoving();
+			}
+			else {
+				if (input.isKeyHeld(SDL_SCANCODE_LSHIFT)) {
+					this->player.move(horizontal, vertical, 2.0);
+				}
+				else if (input.isKeyHeld(SDL_SCANCODE_LCTRL)) {
+					this->player.move(horizontal, vertical, 0.5);
+				}
+				else {
+					this->player.move(horizontal, vertical);
+				}
 			}
 		}
+		
+
 		const int CURRENT_TIME_MS = SDL_GetTicks();
 		int ELAPSED_TIME_MS = CURRENT_TIME_MS - LAST_UPDATE_TIME;
 		this->graphics = graphics;
@@ -113,7 +117,7 @@ void Game::draw(Graphics &graphics) {
 void Game::update(int elapsedTime) {
 	this->player.update(elapsedTime);
 	this->level.update(elapsedTime, this->player);
-	this->hud.update(elapsedTime);
+	this->hud.update(elapsedTime, this->player);
 
 	// Check collisions
 	std::vector<Rectangle> others;

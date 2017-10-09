@@ -275,7 +275,11 @@ void Level::update(int elapsedTime, Player &player) {
 	Vector2 playerPos = Vector2(player.getCenterX(), player.getCenterY());
 	for (int i = 0; i < this->enemies.size(); i++) {
 		Vector2 enemyPos = Vector2(this->enemies.at(i)->getCenterX(), this->enemies.at(i)->getCenterY());
-		this->enemies.at(i)->setInSight(this->BresenhamSight(playerPos, enemyPos));
+		bool inSight = this->BresenhamSight(playerPos, enemyPos);
+		this->enemies.at(i)->setInSight(inSight);
+		if (inSight && player.isShooting() && player.getHealth() > 0) {
+			player.checkBulletCollision(enemies.at(i));
+		}
 		this->enemies.at(i)->update(elapsedTime, player);
 	}
 }
@@ -309,6 +313,16 @@ std::vector<Rectangle> Level::checkTileCollisions(const Rectangle &other) {
 		}
 	}
 	return collidingRects;
+}
+
+std::vector<Enemy*> Level::checkEnemyCollisions(const Rectangle &other) {
+	std::vector<Enemy*> collidingEnemies;
+	for (int i = 0; i < this->enemies.size(); i++) {
+		if (this->enemies.at(i)->getBoundingBox().collidesWith(other)) {
+			collidingEnemies.push_back(this->enemies.at(i));
+		}
+	}
+	return collidingEnemies;
 }
 
 bool Level::checkPointCollisions(int x, int y) const {

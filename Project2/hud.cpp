@@ -3,8 +3,7 @@
 
 HUD::HUD() {}
 
-HUD::HUD(Graphics &graphics, Player player) {
-	this->player = player;
+HUD::HUD(Graphics &graphics) {
 	this->healthBarSprite = Sprite(graphics, "sprites/hud.png", 0, 0, 128, 8, 8, 8);
 	this->currentHealthSprite = Sprite(graphics, "sprites/hud.png", 0, 8, 126, 6, 10, 10);
 	for (int i = 0; i < 3; i++) {
@@ -13,12 +12,12 @@ HUD::HUD(Graphics &graphics, Player player) {
 
 }
 
-void HUD::update(int elapsedTime) {
-	// Width of health bar; 100% == 126px, max health == 100.
-	float healthPercent = (float)this->player.getHealth() / 100;
+void HUD::update(int elapsedTime, Player &player) {
+	// Width of health bar; 100% == 126px.
+	float healthPercent = (float)player.getHealth() / player_constants::MAXHEALTH;
 	this->currentHealthSprite.setSourceRectW(std::floor(healthPercent * 126));
 	for (int i = 0; i < 3; i++) {
-		if (this->player.getLives() <= i) {
+		if (player.getLives() <= i) {
 			this->livesSprites.at(i).setSourceRectX(10);
 		}
 	}

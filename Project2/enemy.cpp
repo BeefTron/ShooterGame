@@ -23,6 +23,10 @@ void Enemy::draw(Graphics &graphics) {
 	AnimatedSprite::draw(graphics, this->x, this->y, this->facing);
 }
 
+void Enemy::changeHealth(int amount) {
+	this->currentHealth += amount;
+}
+
 void Enemy::setInSight(bool enemyInSight) {
 	this->inSight = enemyInSight;
 }
@@ -55,36 +59,47 @@ Alien::Alien(Graphics &graphics, Vector2 spawnPoint) :
 {
 	this->setupAnimation();
 	this->playAnimation("idle");
-	this->speed = 0.1f;
+	this->speed = 0.4f;
 	this->lastKnownPlayerLocation = Vector2(-1, -1);
 	this->maxHealth = 3;
 	this->currentHealth = 3;
 }
 
 void Alien::update(int elapsedTime, Player &player) {
-	float distance = sqrt(std::pow(abs(this->getCenterX() - player.getCenterX()), 2) + std::pow(abs(this->getCenterY() - player.getCenterY()), 2));
-	if (distance < 500 && this->inSight) {
-		// Player is within range and sight - chase
-		this->lastKnownPlayerLocation = Vector2(player.getCenterX(), player.getCenterY());
-		this->setFacing(player.getCenterX(), player.getCenterY());
-		if (distance > 1) {
-			this->move();
+	if (this->currentHealth > 0) {
+		this->distanceToPlayer = sqrt(std::pow(abs(this->getCenterX() - player.getCenterX()), 2) + std::pow(abs(this->getCenterY() - player.getCenterY()), 2));
+		if (this->distanceToPlayer < 500 && this->inSight) {
+			// Player is within range and sight
+			this->lastKnownPlayerLocation = Vector2(player.getCenterX(), player.getCenterY());
+			this->setFacing(player.getCenterX(), player.getCenterY());
+			if (this->distanceToPlayer > this->getBoundingBox().getWidth() / 2) {
+				// Pursue player
+				this->move();
+			}
+			else {
+				// Player is within reach - attack
+				this->touchPlayer(&player);
+				this->stopMoving();
+			}
+			this->playAnimation("alert");
 		}
-		else {
-			this->stopMoving();
+		else if (this->lastKnownPlayerLocation != Vector2(-1, -1)) {
+			// Player has been spotted but is no longer in view - move to last known location
+			float distance2 = sqrt(std::pow(abs(this->getCenterX() - this->lastKnownPlayerLocation.x), 2) + std::pow(abs(this->getCenterY() - this->lastKnownPlayerLocation.y), 2));
+			if (distance2 <= this->getBoundingBox().getWidth() / 2) {
+				// last known player location reached
+				this->lastKnownPlayerLocation = Vector2(-1, -1);
+				this->stopMoving();
+				this->playAnimation("idle");
+			}
 		}
-		this->playAnimation("alert");
 	}
-	else if (this->lastKnownPlayerLocation != Vector2(-1, -1)) {
-		// Player has been spotted but is no longer in view - moving to last known location
-		float distance2 = sqrt(std::pow(abs(this->getCenterX() - this->lastKnownPlayerLocation.x), 2) + std::pow(abs(this->getCenterY() - this->lastKnownPlayerLocation.y), 2));
-		if (distance2 <= 1) {
-			// last known player location reached - player lost
-			this->lastKnownPlayerLocation = Vector2(-1, -1);
-			this->stopMoving();
-			this->playAnimation("idle");
-		}
+	else {
+		// Alien is dead
+		this->playAnimation("die");
+		this->stopMoving();
 	}
+	
 	Enemy::update(elapsedTime, player);
 }
 
@@ -92,11 +107,18 @@ void Alien::draw(Graphics &graphics) {
 	Enemy::draw(graphics);
 }
 
-void Alien::animationDone(std::string currentAnimation) {
+void Alien::touchPlayer(Player* player) {
+	player->changeHealth(-1);
+}
 
+void Alien::animationDone(std::string currentAnimation) {
+	if (currentAnimation != "die") {
+		this->frameIndex = 0;
+	}
 }
 
 void Alien::setupAnimation() {
 	this->addAnimation(1, 0, 0, "idle", 16, 16, Vector2(0, 0));
 	this->addAnimation(4, 0, 32, "alert", 16, 16, Vector2(0, 0));
+	this->addAnimation(4, 0, 48, "die", 16, 16, Vector2(0, 0));
 }

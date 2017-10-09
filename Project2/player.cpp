@@ -10,7 +10,7 @@ Player::Player(Graphics &graphics, Vector2 spawnPoint) :
 	dx(0),
 	dy(0),
 	facing(0.0f),
-	health(100),
+	health(player_constants::MAXHEALTH),
 	lives(3)
 {
 	graphics.loadImage("sprites/PlayerCompressed.png");
@@ -22,11 +22,16 @@ Player::Player(Graphics &graphics, Vector2 spawnPoint) :
 void Player::setupAnimation() {
 	this->addAnimation(1, 0, 0, "idle", 15, 8, Vector2(0, 0));
 	this->addAnimation(4, 0, 0, "move", 15, 8, Vector2(0, 0));
-	this->addAnimation(2, 0, 8, "standAndShoot", 15, 8, Vector2(0, 0));
+	this->addAnimation(4, 0, 8, "standAndShoot", 15, 8, Vector2(0, 0));
 	this->addAnimation(4, 0, 16, "moveAndShoot", 15, 8, Vector2(0, 0));
+	this->addAnimation(6, 0, 32, "die", 15, 8, Vector2(0, 0));
 }
 
-void Player::animationDone(std::string currentAnimation) {}
+void Player::animationDone(std::string currentAnimation) {
+	if (currentAnimation != "die") {
+		this->frameIndex = 0;
+	}
+}
 
 void Player::move(int horizontal, int vertical, float speedMult) {
 	this->dx = player_constants::WALK_SPEED * horizontal * speedMult;
@@ -55,12 +60,40 @@ void Player::setFacing(int mouseX, int mouseY) {
 	this->facing = rads * 180.0000 / 3.1416;
 }
 
-void Player::shoot() {
-	this->shooting = true;
+void Player::setShooting(bool shooting) {
+	this->shooting = shooting;
 }
 
-void Player::holdFire() {
-	this->shooting = false;
+void Player::checkBulletCollision(Enemy* enemy) {
+	float rads = atan2(enemy->getCenterY() - this->getCenterY(), enemy->getCenterX() - this->getCenterX());
+	float enemyAngle = rads * 180.0000 / 3.1416;
+	int enemyWidth = enemy->getBoundingBox().getWidth() / 2;
+	float marginOfError = atan2(enemyWidth, enemy->getDistanceToPlayer()) * 180.0000 / 3.1416;
+	float upper = enemyAngle + marginOfError;
+	if (upper > 180) {
+		upper -= 360;
+	}
+	float lower = enemyAngle - marginOfError;
+	if (lower < -180) {
+		lower += 360;
+	}
+	if (lower > upper) {
+		// The hit range encompasses the angles 180 and -180 degrees. This requires different logic
+		if (this->facing >= lower || this->facing <= upper) {
+			enemy->changeHealth(-1);
+		}
+	}
+	else if (this->facing >= lower && this->facing <= upper) {
+		enemy->changeHealth(-1);
+	}
+}
+
+void Player::changeHealth(int amount) {
+	this->health += amount;
+}
+
+void Player::changeLives(int amount) {
+	this->lives += amount;
 }
 
 void Player::handleTileCollisions(std::vector<Rectangle> &others) {
@@ -85,6 +118,12 @@ void Player::handleTileCollisions(std::vector<Rectangle> &others) {
 	}
 }
 
+void Player::handleEnemyCollisions(std::vector<Enemy*> &enemies) {
+	for (int i = 0; i < enemies.size(); i++) {
+		enemies.at(i)->touchPlayer(this);
+	}
+}
+
 void Player::handleDoorCollision(Door &door, Level &level, Graphics &graphics) {
 	std::string from = level.getMapName();
 	level = Level(door.getDestination(), graphics);
@@ -93,8 +132,13 @@ void Player::handleDoorCollision(Door &door, Level &level, Graphics &graphics) {
 }
 
 void Player::update(int elapsedTime) {
-	this->x += this->dx * elapsedTime;
-	this->y += this->dy * elapsedTime;
+	if (this->health > 0) {
+		this->x += this->dx * elapsedTime;
+		this->y += this->dy * elapsedTime;
+	}
+	else {
+		this->playAnimation("die", true);
+	}
 	AnimatedSprite::update(elapsedTime);
 }
 
